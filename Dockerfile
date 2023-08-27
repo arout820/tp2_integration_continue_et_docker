@@ -4,7 +4,7 @@ FROM jenkins/jenkins:lts-jdk11
 # Passe en utilisateur root pour installer les paquets
 USER root
 
-# Définit le mot de passe root (remplacez "NouveauMotDePasse" par le mot de passe souhaité)
+# Définit le mot de passe root
 RUN echo "root:mdp" | chpasswd
 
 # Ajoute l'alias "ll" pour la commande "ls -la"
