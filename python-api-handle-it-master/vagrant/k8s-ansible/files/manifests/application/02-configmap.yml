@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-config-demo
+  namespace: demo-app
+data:  # Example vars that will get picked up by Flask application
+  FLASK_ENV: development
+  FLASK_DEBUG: "1"
+  FLASK_APP: "main"

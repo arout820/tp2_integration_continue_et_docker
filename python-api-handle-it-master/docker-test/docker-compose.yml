@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  pylint: 
+    build: 'pylint/'
+    volumes:
+      - type: bind
+        source: ../app
+        target: /app/
+  unittest: 
+    build: 'unittest/'
+    volumes:
+      - type: bind
+        source: ../app
+        target: /app/
+  radon-cc: 
+    build: 'radon-cc/'
+    volumes:
+      - type: bind
+        source: ../app
+        target: /app/
+  radon-raw: 
+    build: 'radon-raw/'
+    volumes:
+      - type: bind
+        source: ../app
+        target: /app/
+  app:
+    build: 
+      context: /home/kovalsky/Documents/formation/python-api-handle-it/
+      dockerfile: 'docker-app/python/Dockerfile'
+    ports:
+      - 5000:5000
+  robot:
+    build: 'robot/'
+    environment:
+      URL : app
+      PORT: 5000
+    depends_on: 
+      - app
+    volumes:
+      - type: bind
+        source: ../app
+        target: /app/
+

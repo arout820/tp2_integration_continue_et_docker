@@ -1,0 +1,36 @@
+---
+- hosts: k8s-master
+  become: yes
+  
+  pre_tasks:
+    - name: Ensure Pip is installed.
+      package:
+        name: python3-pip
+        state: present
+    - name: Ensure OpenShift client is installed.
+      pip:
+        name: openshift
+        state: present
+    - name: Ensure K8S client is installed.
+      pip:
+        name: 'kubernetes'
+        state: present
+    - name: Copy application manifest tailored for Vagrant.
+      copy:
+        src: files/manifests/application/
+        dest: "~/files/manifests/application/"
+    
+    - name: Remove previous file
+      file:
+        path:  ~/files/manifests/application/application.yml
+        state: absent
+
+    - name: Insert the provided delimiter between fragments
+      ansible.builtin.assemble:
+        src: ~/files/manifests/application
+        dest: ~/files/manifests/application/application.yml
+        delimiter: '---'
+
+  tasks:
+    - name: Apply definition file from Ansible controller file system.
+      shell: "kubectl apply -f ~/files/manifests/application/application.yml"
